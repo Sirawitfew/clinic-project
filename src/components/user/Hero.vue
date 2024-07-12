@@ -1,16 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import Popup from './Popup.vue';
 
-const isPopupVisible = ref(false);
-
-const togglePopup = () => {
-    isPopupVisible.value = !isPopupVisible.value;
-};
-
-const closePopup = () => {
-    isPopupVisible.value = false;
-};
 </script>
 
 <template>
@@ -34,13 +24,9 @@ const closePopup = () => {
                         @click="togglePopup" @mouseover="isHovered = true" @mouseleave="isHovered = false"
                         @mousedown="isActive = true" @mouseup="isActive = false">
                         <span class="relative z-10 text-white font-light text-md">จองคิวออนไลน์</span>
-                        <div
-                            :class="['absolute inset-0 bg-orange-400 rounded-inherit shadow-[0_0_0_2px_#d48b4a,0_0.625em_0_0_#ffdea5] transition-transform duration-150 ease-[cubic-bezier(0,0,0.58,1)]', { 'shadow-[0_0_0_2px_#d48b4a,0_0.5em_0_0_#ffdea5] transform-translate3d(0,0.5em,-1em)': isHovered, 'shadow-[0_0_0_2px_#d48b4a,0_0_#ffdea5] transform-translate3d(0,0,-1em)': isActive, 'transform-translate3d(0,0.75em,-1em)': !isHovered && !isActive }]">
-                        </div>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <Popup v-if="isPopupVisible" @close="closePopup" />
 </template>
