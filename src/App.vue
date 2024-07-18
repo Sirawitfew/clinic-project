@@ -6,16 +6,19 @@ import { useUserProductStore } from './stores/user/product';
 import { useAdminProductStore } from './stores/admin/product';
 import { useUserCartStore } from './stores/user/cart';
 import { useEventStore } from './stores/event';
+import { useAdminDashboardStore } from './stores/admin/dashboard';
 
 const productStore = useUserProductStore()
 const adminProductStore = useAdminProductStore()
 const cartStore = useUserCartStore()
 const eventStore = useEventStore()
+const AdminDashboardStore = useAdminDashboardStore()
 
 onMounted(() => {
   cartStore.loadCart()
   productStore.loadProducts()
   adminProductStore.loadProduct()
+  AdminDashboardStore.loadStore()
 })
 
 </script>

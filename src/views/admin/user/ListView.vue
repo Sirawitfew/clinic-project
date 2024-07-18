@@ -1,20 +1,23 @@
 <script setup>
+import { onMounted } from "vue";
 import { RouterLink } from "vue-router";
 import { useAdminUserStore } from '@/stores/admin/user'
 
 import AdminLayout from '@/layouts/AdminLayout.vue'
 
-import Edit from '@/components/admin/Edit.vue'
-import Trash from '@/components/admin/Trash.vue'
 import Table from '@/components/Table.vue'
 
 const adminUserStore = useAdminUserStore()
 
-const changeStatus = (index) => {
+const changeStatus = async (index) => {
     const selectedUser = adminUserStore.list[index]
     selectedUser.status = selectedUser.status === 'active' ? 'inactive' : 'active'
-    adminUserStore.updateUser(selectedUser)
+    await adminUserStore.updateUser(selectedUser.uid , selectedUser)
 }
+
+onMounted( async () => {
+    await adminUserStore.loadUser()
+})
 </script>
 
 <template>
@@ -27,7 +30,7 @@ const changeStatus = (index) => {
                 <td>{{ user.updatedAt }}</td>
                 <td>
                     <div class="flex gap-2">
-                        <RouterLink :to="{ name: 'admin-user-update', params: { id: index } }" class="btn">Edit
+                        <RouterLink :to="{ name: 'admin-user-update', params: { id: user.uid } }" class="btn">Edit
                         </RouterLink>
                         <button class="btn" @click="changeStatus(index)">
                             {{ user.status === 'active' ? 'Disable' : 'Enable' }}

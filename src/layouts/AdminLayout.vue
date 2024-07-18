@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, useRoute , useRouter } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 
 import { useAccountStore } from '@/stores/account';
@@ -36,9 +36,9 @@ onMounted(() => {
 const logout = async () => {
     try {
         await accountStore.logout()
-        router.push({name : 'login'})
+        router.push({ name: 'login' })
     } catch (error) {
-        console.log('error' , error)
+        console.log('error', error)
     }
 }
 

@@ -22,7 +22,7 @@ const formData = [
         name: 'Role',
         field: 'role',
         type: 'select',
-        dropdownList: ['admin', 'moderator', 'user']
+        dropdownList: ['admin', 'moderator', 'member']
     },
     {
         name: 'Status',
@@ -38,10 +38,10 @@ const userData = reactive({
     status: ''
 });
 
-onMounted(() => {
+onMounted(async () => {
     if (route.params.id) {
-        userIndex.value = parseInt(route.params.id);
-        const selectedUser = adminUserStore.getUser(userIndex.value);
+        userIndex.value = route.params.id
+        const selectedUser = await adminUserStore.getUser(userIndex.value);
 
 
         userData.fullname = selectedUser.fullname;
@@ -50,10 +50,9 @@ onMounted(() => {
     }
 });
 
-function updateUser() {
+const updateUser = async () => {
     // Your update logic here
-    console.log(userIndex.value, userData)
-    adminUserStore.updateUser(userIndex.value, userData)
+    await adminUserStore.updateUser(userIndex.value, userData)
     eventStore.popupMessage('info' , 'Update User Successful')
     router.push({ name: 'admin-user-list' })
 }

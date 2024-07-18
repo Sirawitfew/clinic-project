@@ -13,6 +13,7 @@ import ProductView from '@/views/user/ProductView.vue'
 import PromotionView from '@/views/user/PromotionView.vue'
 import ArticleView from '@/views/user/ArticleView.vue'
 import ServiceView from '@/views/user/ServiceView.vue'
+import ReservationView from '@/views/user/ReservationView.vue'
 
 //Admin Site
 import AdminLogin from '@/views/admin/LoginView.vue'
@@ -54,6 +55,11 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: CartView
+    },
+    {
+      path: '/reservation',
+      name: 'reservation',
+      component: ReservationView
     },
     {
       path: '/checkout',

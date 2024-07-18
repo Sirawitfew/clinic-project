@@ -2,12 +2,15 @@
 import { RouterLink, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 
-import { GoogleAuthProvider , signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from '@/firebase';
 
 import { useUserCartStore } from '@/stores/user/cart';
 import { useAccountStore } from '@/stores/account';
 import DashboardView from '@/views/admin/DashboardView.vue';
+import Facebook from '@/components/user/Facebook.vue'
+import Instragram from '@/components/user/Instragram.vue'
+import Call from '@/components/user/Call.vue'
 
 const provider = new GoogleAuthProvider();
 
@@ -21,7 +24,7 @@ const login = async () => {
     try {
         await accountStore.signInWithGoogle()
     } catch (error) {
-        console.log('error' , error)
+        console.log('error', error)
     }
 }
 
@@ -30,7 +33,7 @@ const logout = async () => {
         await accountStore.logout()
         window.location.reload()
     } catch (error) {
-        console.log('error' , error)
+        console.log('error', error)
     }
 }
 
@@ -65,13 +68,13 @@ onMounted(async () => {
                         <RouterLink :to="{ name: 'home' }">หน้าแรก</RouterLink>
                     </li>
                     <li class="mx-4 sm:mx-2">
-                        <RouterLink :to="{ name: 'promotion'}">โปรโมชั่น</RouterLink>
+                        <RouterLink :to="{ name: 'promotion' }">โปรโมชั่น</RouterLink>
                     </li>
                     <li class="mx-4 sm:mx-2">
                         <RouterLink :to="{ name: 'product' }">สินค้า</RouterLink>
                     </li>
                     <li class="mx-4 sm:mx-2">
-                        <RouterLink :to="{ name: 'service'}">บริการ</RouterLink>
+                        <RouterLink :to="{ name: 'service' }">บริการ</RouterLink>
                     </li>
                     <li class="mx-4 sm:mx-2">
                         <RouterLink :to="{ name: 'article' }">บทความ</RouterLink>
@@ -86,8 +89,7 @@ onMounted(async () => {
                 <form class="relative mx-auto w-max" @submit.prevent="handleSearch">
                     <input type="search"
                         class="peer cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-orange-300 focus:pl-16 focus:pr-4"
-                        v-model="searchText" 
-                        @keyup="handleSearch" />
+                        v-model="searchText" @keyup="handleSearch" />
                     <svg xmlns="http://www.w3.org/2000/svg"
                         class="absolute inset-y-0 my-auto h-8 w-12 border-r border-transparent stroke-gray-500 px-3.5 peer-focus:border-orange-300 peer-focus:stroke-orange-500"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -111,7 +113,7 @@ onMounted(async () => {
                     <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
                         <div class="card-body">
                             <span class="text-lg font-bold">{{ userCartStore.summaryQuantity }} Items</span>
-                            <span class="text-info">Subtotal: ${{ userCartStore.summaryPrice}}</span>
+                            <span class="text-info">Subtotal: ${{ userCartStore.summaryPrice }}</span>
                             <div class="card-actions">
                                 <RouterLink :to="{ name: 'cart' }" class="btn btn-primary btn-block">View cart
                                 </RouterLink>
@@ -134,7 +136,8 @@ onMounted(async () => {
                     <ul tabindex="0"
                         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-48 p-2 shadow">
                         <li>
-                            <RouterLink :to="{ name: 'profile' }" class="justify-between">แก้ไขข้อมูลส่วนตัว</RouterLink>
+                            <RouterLink :to="{ name: 'profile' }" class="justify-between">แก้ไขข้อมูลส่วนตัว
+                            </RouterLink>
                         </li>
                         <li>
                             <a>ตั้งค่า</a>
@@ -162,36 +165,18 @@ onMounted(async () => {
                         a id nisi.
                     </p>
                     <!-- Social-->
-                    <div class="flex space-x-4 justify-center">
+                    <div class="flex space-x-2 justify-center opacity-75">
                         <!-- Instagram -->
-                        <button
-                            class="button bg-gradient-to-r from-purple-600 via-red-500 to-yellow-400 hover:bg-gradient-to-r hover:from-purple-600 hover:via-red-500 hover:to-yellow-400">
-                            <svg viewBox="0 0 24 24" fill="none" height="24" width="24" aria-hidden="true"
-                                class="w-6 h-6 text-gray-800 dark:text-white">
-                                <path clip-rule="evenodd"
-                                    d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7 2a1 1 0 1 1 2 0 1 1 0 0 1-2 0ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm4-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"
-                                    fill="currentColor" fill-rule="evenodd"></path>
-                            </svg>
+                        <button>
+                            <Instragram />
                         </button>
                         <!-- Twitter -->
-                        <button
-                            class="button bg-gradient-to-r from-purple-600 via-red-500 to-yellow-400 hover:bg-gradient-to-r hover:from-purple-600 hover:via-red-500 hover:to-yellow-400">
-                            <svg viewBox="0 0 24 24" fill="none" height="24" width="24" aria-hidden="true"
-                                class="w-6 h-6 text-gray-800 dark:text-white">
-                                <path
-                                    d="M23.1 4.6a8.8 8.8 0 0 1-2.5.7 4.3 4.3 0 0 0 1.9-2.4c-.9.6-2 .9-3.1 1.2A4.4 4.4 0 0 0 16.1 3c-2.4 0-4.3 2-4.3 4.4 0 .3 0 .6.1.9-3.6-.2-6.8-1.9-9-4.6-.4.6-.6 1.4-.6 2.2 0 1.5.8 2.9 1.9 3.7a4.1 4.1 0 0 1-2-.6v.1c0 2.2 1.5 4 3.6 4.4-.4.1-.8.2-1.3.2-.3 0-.6 0-.9-.1.6 2 2.3 3.3 4.3 3.4A8.7 8.7 0 0 1 1.5 19a10.6 10.6 0 0 0 5.8 1.7c7 0 10.8-6 10.8-11.1 0-.2 0-.4 0-.5a7.8 7.8 0 0 0 2-2.1"
-                                    fill="currentColor"></path>
-                            </svg>
+                        <button>
+                            <Call />
                         </button>
                         <!-- Facebook -->
-                        <button
-                            class="button bg-gradient-to-r from-purple-600 via-red-500 to-yellow-400 hover:bg-gradient-to-r hover:from-purple-600 hover:via-red-500 hover:to-yellow-400">
-                            <svg viewBox="0 0 24 24" fill="none" height="24" width="24" aria-hidden="true"
-                                class="w-6 h-6 text-gray-800 dark:text-white">
-                                <path
-                                    d="M9 8H6v4h3v12h5V12h3.6L18 8h-4V6.5c0-.9.6-1.5 1.5-1.5H18V0h-3c-3.1 0-6 1.9-6 5.6V8Z"
-                                    fill="currentColor"></path>
-                            </svg>
+                        <button>
+                            <Facebook />
                         </button>
                     </div>
                 </div>

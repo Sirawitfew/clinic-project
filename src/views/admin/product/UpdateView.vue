@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted , reactive , ref } from 'vue';
-import { useRoute , useRouter ,RouterLink } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 
 import { useAdminProductStore } from '@/stores/admin/product';
 
@@ -46,13 +46,34 @@ const productData = reactive({
 })
 
 const updateProduct = () => {
-    if (mode.value === 'EDIT') {
-        adminProduct.updateProduct(productIndex.value , productData)
-    } else {
-        adminProduct.addProduct(productData)
+    try {
+        if (mode.value === 'EDIT') {
+            adminProduct.updateProduct(productIndex.value, productData)
+        } else {
+            adminProduct.addProduct(productData)
+        }
+        router.push({ name: 'admin-product-list' })
+    } catch (error) {
+        console.log('error', error)
     }
-    router.push({name:'admin-product-list'})
 }
+
+onMounted(async () => {
+    if (route.params.id) {
+        productIndex.value = route.params.id
+        mode.value = 'EDIT'
+
+        const selectdProduct = await adminProduct.getProduct(productIndex.value)
+
+        productData.name = selectdProduct.name
+        productData.imageUrl = selectdProduct.imageUrl
+        productData.price = selectdProduct.price
+        productData.quantity = selectdProduct.quantity
+        productData.about = selectdProduct.about
+        productData.status = selectdProduct.status
+
+    }
+})
 </script>
 
 <template>
@@ -65,11 +86,7 @@ const updateProduct = () => {
                     <div class="label">
                         <span class="label-text">{{ form.name }}</span>
                     </div>
-                    <input 
-                        type="text" 
-                        class="input input-bordered w-full" 
-                        v-model="productData[form.field]"
-                    />
+                    <input type="text" class="input input-bordered w-full" v-model="productData[form.field]" />
                 </div>
             </div>
 
@@ -88,7 +105,7 @@ const updateProduct = () => {
                 </label>
             </div>
             <div class="flex mt-4 justify-end">
-                <RouterLink :to="{ name: 'admin-product-list'}" class="btn btn-ghost">BACK</RouterLink>
+                <RouterLink :to="{ name: 'admin-product-list' }" class="btn btn-ghost">BACK</RouterLink>
                 <button class="btn btn-neutral" @click="updateProduct()">{{ mode }}</button>
             </div>
         </div>

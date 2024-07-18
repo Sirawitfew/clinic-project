@@ -1,5 +1,19 @@
 <script setup>
+import { ref } from "vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
+import { useAdminDashboardStore } from "@/stores/admin/dashboard";
+import { storeToRefs } from "pinia";
+
+const AdminDashboardStore = useAdminDashboardStore();
+const { ToggleOpenClose } = storeToRefs(AdminDashboardStore);
+
+const toggleStore = () => {
+    if (ToggleOpenClose.value) {
+        AdminDashboardStore.closeStore();
+    } else {
+        AdminDashboardStore.openStore();
+    }
+};
 
 const barOption = {
     options: {
@@ -24,9 +38,21 @@ const donutOption = {
 };
 </script>
 
+
+
+
 <template>
     <AdminLayout>
-        <h1 class="text-4xl mb-4">Dashboard</h1>
+        <div class="flex justify-between">
+            <h1 class="text-4xl mb-4">Dashboard</h1>
+            <div class="form-control">
+                <label class="label cursor-pointer">
+                    <span class="label-text">เปิดร้าน - ปิดร้าน</span>
+                    <input type="checkbox" class="toggle toggle-accent mx-2" :checked="ToggleOpenClose"
+                        @change="toggleStore" />
+                </label>
+            </div>
+        </div>
         <div class="flex mb-4">
             <div class="stats shadow w-full">
                 <div class="stat">

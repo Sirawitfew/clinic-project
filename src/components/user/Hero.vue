@@ -1,12 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref , reactive } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import User from './User.vue';
+import { useAdminDashboardStore } from '@/stores/admin/dashboard';
 
-const isPopupOpen = ref(false);
-const currentStep = ref(1);
-const steps = ["หมวดหมู่", "เลือกวันที่และเวลา", "ตรวจสุขภาพ", "ขอใบรับรองออนไลน์"];
+const AdminDashboardStore = useAdminDashboardStore()
+
+const isPopupOpen = ref(false)
+const statusStore = ref('')
+const currentStep = ref(1)
+const steps = ["หมวดหมู่", "เลือกวันที่และเวลา", "ตรวจสุขภาพ", "ขอใบรับรองออนไลน์"]
 
 function nextStep() {
     if (currentStep.value < steps.length) {
@@ -24,6 +28,15 @@ const togglePopup = () => {
     isPopupOpen.value = !isPopupOpen.value;
     currentStep.value = 1;
 };
+
+
+onMounted(() => {
+    if (AdminDashboardStore.ToggleOpenClose == true) {
+        statusStore.value = 'เปิดร้าน'
+    } else {
+        statusStore.value = 'ปิดร้าน'
+    }
+})
 </script>
 
 <template>
@@ -43,15 +56,18 @@ const togglePopup = () => {
                 </div>
                 <div class="flex flex-col my-5">
                     <div>
-                        <button
+                        <RouterLink
+                            :to="{name: 'reservation'}"
                             class="btn bg-orange-500 hover:-translate-y-1 rounded-md shadow-md hover:shadow-lg active:shadow-inner h-14 w-48 hover:bg-slate-50 hover:bg-opacity-50"
-                            @click="togglePopup" role="button">
+                            role="button">
                             <span class="relative z-10 text-white font-light text-lg">จองคิวออนไลน์</span>
-                        </button>
+                        </RouterLink>
                     </div>
                     <div class="flex justify-center">
-                        <p class=" text-white mt-3">สถานะ : </p>
-                        <p class="text-red-500 mx-2 mt-3">ปิดร้าน</p>
+                        <p class="text-white mt-3">สถานะ : </p>
+                        <div :class="statusStore === 'เปิดร้าน' ? 'text-green-600' : 'text-red-500'" class="mt-3 mx-2">
+                            {{ statusStore }}
+                        </div>
                     </div>
                 </div>
             </div>
